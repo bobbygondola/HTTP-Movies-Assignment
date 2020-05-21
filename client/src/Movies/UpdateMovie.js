@@ -10,7 +10,7 @@ const initialMovie = {
   stars: [],
 };
 
-const UpdateMovie = (props) => {
+const UpdateMovie = props => {
   const { id } = useParams();
   console.log("id", id);
   const { push } = useHistory();
@@ -22,6 +22,7 @@ const UpdateMovie = (props) => {
       .then((res) => {
         console.log(res.data);
         setMovie(res.data);
+        console.log("this is the movie", movie)
       })
       .catch((err) => console.log(err));
   }, [id]);
@@ -42,7 +43,8 @@ const UpdateMovie = (props) => {
       .put(`http://localhost:5000/api/movies/${movie.id}`, movie)
       .then((res) => {
         // res.data
-        props.setMovie([...props.movie, res.data]);
+        setMovie(res.data);
+        props.getMovieList()
         push("/");
       })
       .catch((err) => console.log(err));
@@ -67,9 +69,11 @@ const UpdateMovie = (props) => {
   //   }
   return (
     <div>
+      
+      <form onSubmit={handleSubmit} className="updateForm">
       <h3>Update movie</h3>
-      <form onSubmit={handleSubmit}>
         <label>Title</label>
+        <br />
         <input
           placeholder="Title"
           type="text"
@@ -79,6 +83,7 @@ const UpdateMovie = (props) => {
         />
         <br />
         <label>Director</label>
+        <br />
         <input
           placeholder="Director"
           type="text"
@@ -88,6 +93,7 @@ const UpdateMovie = (props) => {
         />
         <br />
         <label>Metascore:</label>
+        <br />
         <input
           placeholder="Meta"
           type="number"
@@ -98,6 +104,7 @@ const UpdateMovie = (props) => {
 
         <br />
         <label>Staring:</label>
+        <br />
         <input
           placeholder="Actors"
           type="text"
@@ -105,9 +112,11 @@ const UpdateMovie = (props) => {
           onChange={changeHandler}
           value={movie.actors}
         />
+        <br />
+        <button type="submit" >Submit</button>
       </form>
       {/* <button type="submit" onClick={addActorHandler}>Add Actor</button> */}
-      <button type="submit">Submit</button>
+      
     </div>
   );
 };
